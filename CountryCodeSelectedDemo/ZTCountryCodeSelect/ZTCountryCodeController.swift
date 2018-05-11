@@ -58,6 +58,8 @@ class ZTCountryCodeController: UIViewController, UISearchResultsUpdating, UITabl
         let search = UISearchController.init(searchResultsController: nil)
         search.searchResultsUpdater = self
         search.dimsBackgroundDuringPresentation = false
+        search.definesPresentationContext = true 
+        search.searchBar.placeholder = "搜索"
         searchController = search
         self.countryCodeTableView.tableHeaderView = search.searchBar
         countryCodeTableView.reloadData()
@@ -129,29 +131,21 @@ class ZTCountryCodeController: UIViewController, UISearchResultsUpdating, UITabl
         }
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        searchController.isActive = false
+        
         if self.codeSelectedCallBack != nil {
             let cell = tableView.cellForRow(at: indexPath)!
             var  codeNumStr = (cell.detailTextLabel?.text!)!
-            codeNumStr = codeNumStr.filter { (str) -> Bool in
-                if str == " " || str == "+" {
-                    return false
-                } else {
-                    return true
-                }
-            }
+            codeNumStr = codeNumStr.replacingOccurrences(of: "+", with: "")
+            codeNumStr = codeNumStr.replacingOccurrences(of: " ", with: "")
             var countryName = (cell.textLabel?.text!)!
-            countryName = countryName.filter({ (str) -> Bool in
-                if str == " " {
-                    return false
-                } else {
-                    return true
-                }
-            })
+             countryName = countryName.replacingOccurrences(of: " ", with: "")
             self.codeSelectedCallBack!(countryName, codeNumStr)
             if delegate != nil {
                 delegate?.ztCountryCodeDidSelect(countryName: countryName, countryCode: codeNumStr)
             }
+            searchController.isActive = false
+            navigationController?.modalTransitionStyle = .flipHorizontal
+            navigationController?.modalPresentationStyle = .none
             navigationController?.popViewController(animated: true)
         }
     }
@@ -198,21 +192,9 @@ class ZTCountryCodeController: UIViewController, UISearchResultsUpdating, UITabl
         })
         for (_, valueArr) in tempDic {
             for str in valueArr {
-                let code = str.components(separatedBy: "+").last?.filter({ (temp) -> Bool in
-                    if temp == " " {
-                        return false
-                    } else {
-                        return true
-                    }
-                })
+                let code = str.components(separatedBy: "+").last?.replacingOccurrences(of: " ", with: "")
                 if code == countryCode  {
-                    return str.components(separatedBy: "+").first!.filter({ (temp) -> Bool in
-                        if temp == " " {
-                            return false
-                        } else {
-                            return true
-                        }
-                    })
+                    return str.components(separatedBy: "+").first!.replacingOccurrences(of: " ", with: "")
                 }
             }
         }
