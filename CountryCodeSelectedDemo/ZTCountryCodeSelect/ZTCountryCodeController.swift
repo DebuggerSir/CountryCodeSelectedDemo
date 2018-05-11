@@ -13,6 +13,7 @@ class ZTCountryCodeController: UIViewController, UISearchResultsUpdating, UITabl
     
     typealias callBack = (_ countryName:String, _ countryCode:String)->()
     public var codeSelectedCallBack:callBack?
+    public weak var delegate:ZTCountryCodeControllerDelegate?
     fileprivate var searchController:UISearchController!
     
     fileprivate lazy var countryCodeTableView: UITableView = {
@@ -54,12 +55,7 @@ class ZTCountryCodeController: UIViewController, UISearchResultsUpdating, UITabl
         search.searchResultsUpdater = self
         search.dimsBackgroundDuringPresentation = false
         searchController = search
-        
         self.countryCodeTableView.tableHeaderView = search.searchBar
-        print(self.indexArr!)
-        
-        
-        
         countryCodeTableView.reloadData()
     }
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -96,7 +92,6 @@ class ZTCountryCodeController: UIViewController, UISearchResultsUpdating, UITabl
         }
         let arr = str.components(separatedBy: "+")
         cell?.textLabel?.text = arr.first!
-        //            arr?.removeFirst()
         cell?.detailTextLabel?.text = "+" + arr.last!
         cell?.detailTextLabel?.textColor = .lightGray
         return cell!
@@ -143,6 +138,9 @@ class ZTCountryCodeController: UIViewController, UISearchResultsUpdating, UITabl
                 }
             })
             self.codeSelectedCallBack!(countryName, codeNumStr)
+            if delegate != nil {
+                delegate?.ztCountryCodeDidSelect(countryName: countryName, countryCode: codeNumStr)
+            }
             navigationController?.popViewController(animated: true)
         }
     }
@@ -215,14 +213,8 @@ class ZTCountryCodeController: UIViewController, UISearchResultsUpdating, UITabl
     }
     
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
+}
+
+protocol ZTCountryCodeControllerDelegate: class {
+    func ztCountryCodeDidSelect(countryName:String, countryCode:String)
 }

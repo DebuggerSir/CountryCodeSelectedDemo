@@ -105,9 +105,7 @@
 			children = (
 				9D0C90B620A52CB40008F0FA /* AppDelegate.swift */,
 				9D0C90B820A52CB40008F0FA /* ViewController.swift */,
-				9D0C90E420A52CEF0008F0FA /* sortedChnames.plist */,
-				9D0C90E520A52CEF0008F0FA /* sortedEnames.plist */,
-				9D0C90E620A52CEF0008F0FA /* ZTCountryCodeController.swift */,
+				9D0C90EA20A565BD0008F0FA /* ZTCountryCodeSelect */,
 				9D0C90BA20A52CB40008F0FA /* Main.storyboard */,
 				9D0C90BD20A52CC60008F0FA /* Assets.xcassets */,
 				9D0C90BF20A52CC60008F0FA /* LaunchScreen.storyboard */,
@@ -132,6 +130,16 @@
 				9D0C90D820A52CC70008F0FA /* Info.plist */,
 			);
 			path = CountryCodeSelectedDemoUITests;
+			sourceTree = "<group>";
+		};
+		9D0C90EA20A565BD0008F0FA /* ZTCountryCodeSelect */ = {
+			isa = PBXGroup;
+			children = (
+				9D0C90E620A52CEF0008F0FA /* ZTCountryCodeController.swift */,
+				9D0C90E420A52CEF0008F0FA /* sortedChnames.plist */,
+				9D0C90E520A52CEF0008F0FA /* sortedEnames.plist */,
+			);
+			path = ZTCountryCodeSelect;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

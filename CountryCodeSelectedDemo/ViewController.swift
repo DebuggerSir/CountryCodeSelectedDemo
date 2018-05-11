@@ -8,7 +8,9 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITextFieldDelegate {
+class ViewController: UIViewController, UITextFieldDelegate,ZTCountryCodeControllerDelegate {
+
+    
 
     @IBOutlet weak var codeTextF: UITextField!
     @IBOutlet weak var countryButton: UIButton!
@@ -19,6 +21,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     @IBAction func contryClick(_ sender: UIButton) {
         let vc = ZTCountryCodeController()
+        vc.delegate = self
+        //block传值
         vc.codeSelectedCallBack = { (countryName, code) in
             sender.setTitle(countryName, for: .normal)
             self.codeTextF.text = code
@@ -26,16 +30,20 @@ class ViewController: UIViewController, UITextFieldDelegate {
         navigationController?.pushViewController(vc, animated: true)
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        print(string, textField.text!)
         var  code = textField.text!
         if string == "" {
             code.removeLast()
         } else {
             code = textField.text! + string
         }
-        
+        //根据编码查找地区
         countryButton.setTitle(ZTCountryCodeController.searchCountyNameByCode(countryCode: code), for: .normal)
         return true
+    }
+    //代理
+    func ztCountryCodeDidSelect(countryName: String, countryCode: String) {
+        countryButton.setTitle(countryName, for: .normal)
+        self.codeTextF.text = countryCode
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
