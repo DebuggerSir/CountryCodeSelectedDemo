@@ -15,7 +15,7 @@ class ZTCountryCodeController: UIViewController, UISearchResultsUpdating, UITabl
     public var codeSelectedCallBack:callBack?
     public weak var delegate:ZTCountryCodeControllerDelegate?
     fileprivate var searchController:UISearchController!
-    
+    fileprivate var parentNaviBarIsTranslucent:Bool = true
     fileprivate lazy var countryCodeTableView: UITableView = {
         
         let tableV = UITableView.init(frame: view.bounds, style: .plain)
@@ -50,13 +50,24 @@ class ZTCountryCodeController: UIViewController, UISearchResultsUpdating, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         searchResultValuesArray = Array()
-        
+        //排除isTranslucent的影响
+        if navigationController?.navigationBar.isTranslucent == false {
+            navigationController?.navigationBar.isTranslucent = true
+            parentNaviBarIsTranslucent = false
+        }
         let search = UISearchController.init(searchResultsController: nil)
         search.searchResultsUpdater = self
         search.dimsBackgroundDuringPresentation = false
         searchController = search
         self.countryCodeTableView.tableHeaderView = search.searchBar
         countryCodeTableView.reloadData()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if parentNaviBarIsTranslucent == false {
+            navigationController?.navigationBar.isTranslucent = parentNaviBarIsTranslucent
+        }
+        
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         if searchController.isActive == false {

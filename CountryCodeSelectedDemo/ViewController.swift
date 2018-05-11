@@ -18,6 +18,7 @@ class ViewController: UIViewController, UITextFieldDelegate,ZTCountryCodeControl
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         codeTextF.delegate = self
+        self.navigationController?.navigationBar.isTranslucent = false
     }
     @IBAction func contryClick(_ sender: UIButton) {
         let vc = ZTCountryCodeController()
