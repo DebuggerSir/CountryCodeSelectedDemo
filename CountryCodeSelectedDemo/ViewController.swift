@@ -38,7 +38,7 @@ class ViewController: UIViewController, UITextFieldDelegate,ZTCountryCodeControl
             code = textField.text! + string
         }
         //根据编码查找地区
-        countryButton.setTitle(ZTCountryCodeController.searchCountyNameByCode(countryCode: code), for: .normal)
+        countryButton.setTitle(ZTCountryCodeController.searchCountryNameByCode(countryCode: code), for: .normal)
         return true
     }
     //代理

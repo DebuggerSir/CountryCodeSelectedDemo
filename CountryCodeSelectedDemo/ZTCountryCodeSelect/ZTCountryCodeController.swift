@@ -17,11 +17,13 @@ class ZTCountryCodeController: UIViewController, UISearchResultsUpdating, UITabl
     fileprivate var searchController:UISearchController!
     fileprivate var parentNaviBarIsTranslucent:Bool = true
     fileprivate lazy var countryCodeTableView: UITableView = {
-        
         let tableV = UITableView.init(frame: view.bounds, style: .plain)
         tableV.delegate = self
         tableV.dataSource = self
         view.addSubview(tableV)
+        if #available(iOS 11, *) {
+            tableV.frame = CGRect.init(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height - 34)
+        }
         return tableV
     }()
     fileprivate lazy var sortedNameDict:Dictionary<String, Array<String>>! = {
@@ -44,11 +46,11 @@ class ZTCountryCodeController: UIViewController, UISearchResultsUpdating, UITabl
         })
         return arr
     }()
-    
     fileprivate var searchResultValuesArray:Array<String>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         searchResultValuesArray = Array()
         //排除isTranslucent的影响
         if navigationController?.navigationBar.isTranslucent == false {
@@ -58,7 +60,7 @@ class ZTCountryCodeController: UIViewController, UISearchResultsUpdating, UITabl
         let search = UISearchController.init(searchResultsController: nil)
         search.searchResultsUpdater = self
         search.dimsBackgroundDuringPresentation = false
-        search.definesPresentationContext = true 
+        search.definesPresentationContext = true
         search.searchBar.placeholder = "搜索"
         searchController = search
         self.countryCodeTableView.tableHeaderView = search.searchBar
@@ -69,7 +71,6 @@ class ZTCountryCodeController: UIViewController, UISearchResultsUpdating, UITabl
         if parentNaviBarIsTranslucent == false {
             navigationController?.navigationBar.isTranslucent = parentNaviBarIsTranslucent
         }
-        
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         if searchController.isActive == false {
@@ -170,7 +171,7 @@ class ZTCountryCodeController: UIViewController, UISearchResultsUpdating, UITabl
     ///
     /// - Parameter countryCode: 三种情况，无效，为""，有效数字
     /// - Returns: 根据上述三种情况返回地区
-    class func searchCountyNameByCode(countryCode:String) -> String {
+    class func searchCountryNameByCode(countryCode:String) -> String {
         if countryCode == "" {
             return "请从列表中选择"
         }
